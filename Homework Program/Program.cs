@@ -10,20 +10,21 @@ namespace Homework_Program
             public string description;
             public DateTime dueDate;
             public bool complete;
+            //Structure for homework
         }
         static void Main(string[] args)
         {
-            homework[] hmwk = new homework[20];
-            int homeworkcount = 0;
-            gethomework(ref hmwk, ref homeworkcount);
-            userselection(ref hmwk, ref homeworkcount);
+            homework[] hmwk = new homework[20];//Declares array for homework to be stored
+            int homeworkcount = 0;//Counter for how much homework is stored on the file
+            gethomework(ref hmwk, ref homeworkcount);//Retrieves homework from homework file and stores into the hmwk array
+            userselection(ref hmwk, ref homeworkcount);//Goes to user selection where user decides what they want to do
             
         }
 
         static void gethomework(ref homework[] hmwk, ref int homeworkcount)
         {
             StreamReader work = new StreamReader("homework.txt");
-            while (!work.EndOfStream)
+            while (!work.EndOfStream)//Reads the homework from file and adds to array
             {
                 
                 string[] homework = work.ReadLine().Split(',');
@@ -33,13 +34,13 @@ namespace Homework_Program
                 thishomework.dueDate = DateTime.Parse(homework[2]);
                 thishomework.complete = bool.Parse(homework[3]);
                 hmwk[homeworkcount] = thishomework;
-                homeworkcount++;
+                homeworkcount++;//Counter increments everytime a homework is added to the array
 
 
             }
             work.Close();
             Console.WriteLine("{0} homework(s) loaded.", homeworkcount);
-            for (int i = 0; i < homeworkcount; i++)
+            for (int i = 0; i < homeworkcount; i++)//Checks how many homeworks are overdue and alerts the user
             {
                 if(DateTime.Today > hmwk[i].dueDate)
                 {
@@ -57,7 +58,7 @@ namespace Homework_Program
 
         static void userselection(ref homework[] hmwk, ref int homeworkcount)
         {
-            
+            //User selects what they want to do
             string choice = "";
             while (choice == "")
             {
@@ -113,8 +114,9 @@ namespace Homework_Program
                 Console.WriteLine("=================================");
 
             }
-            
+            //Displays all homework. It will mark completed homeworks as green and homeworks that are overdue or less than 3 days away as red
         }
+        
         static void hmwktocomplete(homework[] hmwk, int homeworkcount)
         {
             Console.Clear();
@@ -136,6 +138,7 @@ namespace Homework_Program
                     Console.WriteLine("=================================");
                 }
             }
+            //Displays only the homework that needs to be completed, marking those overdue or less than 3 days away from dues date as red
 
         }
 
@@ -152,7 +155,7 @@ namespace Homework_Program
             hmwk[choice].complete = true;
             Console.Clear();
             userselection(ref hmwk, ref homeworkcount);
-
+            //User selects homework that they would like to be marked complete 
         }
 
         static void addhmwk(ref homework[] hmwk, ref int homeworkcount)
@@ -162,18 +165,18 @@ namespace Homework_Program
                 Console.WriteLine("The max limit of homework has been added.\nPlease complete some homework before adding more.");
                 userselection(ref hmwk, ref homeworkcount);
             }
-
+            //If there is already 20 homeworks in the array, it will not let the user add anymore.
             
-            
+            //User inputs the information about the homework that they want to add
             Console.Write("Enter the subject of the homework: ");
             hmwk[homeworkcount].subject = Console.ReadLine();
             Console.Write("Enter a description of what the homework is about: ");
             hmwk[homeworkcount].description = Console.ReadLine();
             DateTime date = DateTime.Today; 
-            validateDate(ref date);
+            validateDate(ref date);//Makes sure that the due date is valid
             hmwk[homeworkcount].dueDate = date;
             hmwk[homeworkcount].complete = false;
-            homeworkcount++;
+            homeworkcount++;//Increments homeworkcount after the user adds a homework to the array
             userselection(ref hmwk, ref homeworkcount);
             
 
@@ -184,6 +187,7 @@ namespace Homework_Program
         {
             while(date == DateTime.Today)
             {
+                //Validates the date that the user inputs to make sure that the due date is at a sate later than the current day
                 Console.Write("Enter the due date (dd/mm/yyyy): ");
                 try
                 {
@@ -212,6 +216,7 @@ namespace Homework_Program
 
             }
             writefile.Close();
+            //Overwrites the homework file with the new information that is stored in the array
         }
     }
 }
