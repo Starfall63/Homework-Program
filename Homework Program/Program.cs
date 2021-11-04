@@ -43,7 +43,7 @@ namespace Homework_Program
             int overdue = 0;
             for (int i = 0; i < homeworkcount; i++)//Checks how many homeworks are overdue and alerts the user
             {
-                if(DateTime.Today > hmwk[i].dueDate)
+                if((DateTime.Today > hmwk[i].dueDate) && (hmwk[i].complete == false))
                 {
                     overdue++;
                 }
