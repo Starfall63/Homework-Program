@@ -59,6 +59,7 @@ namespace Homework_Program
         static void userselection(ref homework[] hmwk, ref int homeworkcount)
         {
             //User selects what they want to do
+            
             string choice = "";
             while (choice == "")
             {
@@ -66,7 +67,8 @@ namespace Homework_Program
                     "1: View All Homework\n" +
                     "2: Complete Homework\n" +
                     "3: Add Homework\n" +
-                    "4: Quit");
+                    "4: Search for Homework\n" +
+                    "5: Quit");
                 choice = Console.ReadLine();
                 switch (choice)
                 {
@@ -81,6 +83,9 @@ namespace Homework_Program
                         addhmwk(ref hmwk, ref homeworkcount);
                         break;
                     case "4":
+                        search(hmwk, homeworkcount);
+                        break;
+                    case "5":
                         outfile(hmwk, homeworkcount);//When user quits the program it will add any changes to the homework file before exiting
                         Environment.Exit(0);
                         break;
@@ -160,6 +165,7 @@ namespace Homework_Program
 
         static void addhmwk(ref homework[] hmwk, ref int homeworkcount)
         {
+            Console.Clear();
             if(homeworkcount >= 20)
             {
                 Console.WriteLine("The max limit of homework has been added.\nPlease complete some homework before adding more.");
@@ -169,7 +175,7 @@ namespace Homework_Program
             
             //User inputs the information about the homework that they want to add
             Console.Write("Enter the subject of the homework: ");
-            hmwk[homeworkcount].subject = Console.ReadLine();
+            hmwk[homeworkcount].subject = Console.ReadLine().ToUpper();
             Console.Write("Enter a description of what the homework is about: ");
             hmwk[homeworkcount].description = Console.ReadLine();
             DateTime date = DateTime.Today; 
@@ -177,6 +183,9 @@ namespace Homework_Program
             hmwk[homeworkcount].dueDate = date;
             hmwk[homeworkcount].complete = false;
             homeworkcount++;//Increments homeworkcount after the user adds a homework to the array
+            Console.WriteLine("{0} homework has been added.\nPress any key to continue.", hmwk[homeworkcount-1].subject);
+            Console.ReadKey();
+            Console.Clear();
             userselection(ref hmwk, ref homeworkcount);
             
 
@@ -206,6 +215,51 @@ namespace Homework_Program
             }
             
         }
+
+        static void search(homework[] hmwk, int homeworkcount)
+        {
+            //Searches for homework given the subject
+            Console.Clear();
+            Console.Write("Enter the subject of the homework that you are looking for: ");
+            string subject = Console.ReadLine().ToUpper();//User inputs what homework that they would like to search for
+            bool found = false;
+            for (int i = 0; i < homeworkcount; i++)
+            {
+                if(hmwk[i].subject == subject)//If there is homework with the specific subject it will output all homework with that subject
+                {
+                    found = true;
+                    TimeSpan daysleft = hmwk[i].dueDate - DateTime.Today;
+                    if (daysleft.Days <= 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Console.WriteLine("Homework {0}:", i);
+                    Console.WriteLine(hmwk[i].subject);
+                    Console.WriteLine(hmwk[i].description);
+                    Console.WriteLine(hmwk[i].dueDate.ToString("dd/MM/yyyy") + "\n");
+                    Console.ResetColor();
+                    Console.WriteLine("=================================");
+                }
+            }
+            if(found == true)
+            {
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
+                Console.Clear();
+                userselection(ref hmwk, ref homeworkcount);
+
+            }
+            else
+            {
+                Console.WriteLine("There are no homeworks that include that subject.\nPress any key to continue.");
+                Console.ReadKey();
+                Console.Clear();
+                userselection(ref hmwk, ref homeworkcount);
+            }
+        }
+
+
+
 
         static void outfile(homework[] hmwk, int homeworkcount)
         {
