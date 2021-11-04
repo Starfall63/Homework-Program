@@ -40,15 +40,18 @@ namespace Homework_Program
             }
             work.Close();
             Console.WriteLine("{0} homework(s) loaded.", homeworkcount);
+            int overdue = 0;
             for (int i = 0; i < homeworkcount; i++)//Checks how many homeworks are overdue and alerts the user
             {
                 if(DateTime.Today > hmwk[i].dueDate)
                 {
-                    int overdue = 0;
                     overdue++;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("There are {0} homework(s) overdue.", overdue);
                 }
+            }
+            if(overdue > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There are {0} homework(s) overdue.", overdue);
             }
             Console.ResetColor();
             Console.WriteLine("Press any key to Continue.");
