@@ -38,7 +38,19 @@ namespace Homework_Program
 
             }
             work.Close();
-            Console.WriteLine("{0} homework(s) loaded.\nPress any key to Continue.", homeworkcount);
+            Console.WriteLine("{0} homework(s) loaded.", homeworkcount);
+            for (int i = 0; i < homeworkcount; i++)
+            {
+                if(DateTime.Today > hmwk[i].dueDate)
+                {
+                    int overdue = 0;
+                    overdue++;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("There are {0} homework(s) overdue.", overdue);
+                }
+            }
+            Console.ResetColor();
+            Console.WriteLine("Press any key to Continue.");
             Console.ReadKey();
             Console.Clear();
         }
@@ -50,7 +62,7 @@ namespace Homework_Program
             while (choice == "")
             {
                 Console.WriteLine("What would you like to do?\n" +
-                    "1: View Homework\n" +
+                    "1: View All Homework\n" +
                     "2: Complete Homework\n" +
                     "3: Add Homework\n" +
                     "4: Quit");
@@ -58,7 +70,7 @@ namespace Homework_Program
                 switch (choice)
                 {
                     case "1":
-                        viewhmwk(hmwk, homeworkcount);
+                        viewallhmwk(hmwk, homeworkcount);
                         userselection(ref hmwk, ref homeworkcount);
                         break;
                     case "2":
@@ -78,7 +90,7 @@ namespace Homework_Program
                 }
             }
         }
-        static void viewhmwk(homework[] hmwk, int homeworkcount)
+        static void viewallhmwk(homework[] hmwk, int homeworkcount)
         {
             Console.Clear();
             Console.WriteLine("=================================");
@@ -103,10 +115,33 @@ namespace Homework_Program
             }
             
         }
+        static void hmwktocomplete(homework[] hmwk, int homeworkcount)
+        {
+            Console.Clear();
+            Console.WriteLine("=================================");
+            for (int i = 0; i < homeworkcount; i++)
+            {
+                if(hmwk[i].complete == false)
+                {
+                    TimeSpan daysleft = hmwk[i].dueDate - DateTime.Today;
+                    if (daysleft.Days <= 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Console.WriteLine("Homework {0}:", i);
+                    Console.WriteLine(hmwk[i].subject);
+                    Console.WriteLine(hmwk[i].description);
+                    Console.WriteLine(hmwk[i].dueDate.ToString("dd/MM/yyyy") + "\n");
+                    Console.ResetColor();
+                    Console.WriteLine("=================================");
+                }
+            }
+
+        }
 
         static void completehmwk(ref homework[] hmwk, ref int homeworkcount)
         {
-            viewhmwk(hmwk, homeworkcount);
+            hmwktocomplete(hmwk, homeworkcount);
             Console.Write("What homework number would you like to complete: ");
             int choice = int.Parse(Console.ReadLine());
             if (hmwk[choice].complete == true)
