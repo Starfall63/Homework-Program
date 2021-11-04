@@ -81,7 +81,7 @@ namespace Homework_Program
                         addhmwk(ref hmwk, ref homeworkcount);
                         break;
                     case "4":
-                        outfile(hmwk, homeworkcount);
+                        outfile(hmwk, homeworkcount);//When user quits the program it will add any changes to the homework file before exiting
                         Environment.Exit(0);
                         break;
                     default:
