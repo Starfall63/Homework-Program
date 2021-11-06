@@ -122,6 +122,10 @@ namespace Homework_Program
                 Console.WriteLine("=================================");
 
             }
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            
             //Displays all homework. It will mark completed homeworks as green and homeworks that are overdue or less than 3 days away as red
         }
         
@@ -235,6 +239,10 @@ namespace Homework_Program
                     if (daysleft.Days <= 3)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    if (hmwk[i].complete == true)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
                     }
                     Console.WriteLine("Homework {0}:", i);
                     Console.WriteLine(hmwk[i].subject);
